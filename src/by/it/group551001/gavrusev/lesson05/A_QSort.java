@@ -44,6 +44,35 @@ public class A_QSort {
             System.out.print(index + " ");
         }
     }
+    public static void QuickSort(Segment[] segs, int l, int r) {
+        if (l >= r)
+            return;
+
+        int i = l, j = r;
+        Segment pivot = segs[(l + r) / 2];
+
+        while (i <= j) {
+            while (segs[i].compareTo(pivot) < 0)
+                i++;
+
+            while (segs[j].compareTo(pivot) > 0)
+                j--;
+
+            if (i <= j) {
+                Segment temp = segs[i];
+                segs[i] = segs[j];
+                segs[j] = temp;
+                i++;
+                j--;
+            }
+        }
+
+        if (l < j)
+            QuickSort(segs, l, j);
+
+        if (i < r)
+            QuickSort(segs, i, r);
+    }
 
     int[] getAccessory(InputStream stream) throws FileNotFoundException {
         //подготовка к чтению данных
@@ -66,8 +95,19 @@ public class A_QSort {
         for (int i = 0; i < m; i++) {
             points[i] = scanner.nextInt();
         }
-        //тут реализуйте логику задачи с применением быстрой сортировки
-        //в классе отрезка Segment реализуйте нужный для этой задачи компаратор
+        QuickSort(segments, 0, n-1);
+
+        for (int i = 0; i < m; i++) {
+            int point = points[i];
+            int count = 0;
+
+            for (int j = 0; j < n; j++) {
+                if (point >= segments[j].start && point <= segments[j].stop)
+                    count += 1;
+            }
+
+            result[i] = count;
+        }
 
 
         //!!!!!!!!!!!!!!!!!!!!!!!!!     КОНЕЦ ЗАДАЧИ     !!!!!!!!!!!!!!!!!!!!!!!!!
